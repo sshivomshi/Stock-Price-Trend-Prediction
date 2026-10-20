@@ -1,6 +1,7 @@
 """GOD Trade AI Dashboard.
 Complete implementation of the TradeVision design system customized as GOD Trade.
-Integrates live quantitative prediction models, computer vision chart OCR,
+Features modern modular section architecture, custom-styled navigation tiles,
+live quantitative prediction models, computer vision chart OCR,
 multi-asset watchlists, strategy backtests, and interactive AI Trade Assistant.
 Course: CSE4007L - Applications of Machine Learning in Industry (Fin-Project 3)
 """
@@ -34,7 +35,7 @@ st.markdown("""
 <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
     :root {
@@ -42,6 +43,7 @@ st.markdown("""
         --card-dark: #141417;
         --accent-neon: #00ffa3;
         --accent-purple: #8b5cf6;
+        --accent-blue: #38bdf8;
         --text-dim: #94a3b8;
     }
 
@@ -51,42 +53,153 @@ st.markdown("""
         color: #ffffff;
     }
 
-    /* Main Container */
     .stApp {
         background-color: #09090b;
     }
 
-    /* Glass Cards */
-    .glass-card {
-        background: rgba(20, 20, 23, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 16px;
-        padding: 20px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    /* -------------------------------------------------------------
+       SIDEBAR REVOLUTION: Modular Sections & Styled Nav Tiles
+       ------------------------------------------------------------- */
+    section[data-testid="stSidebar"] {
+        background-color: #09090b !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+    }
+
+    section[data-testid="stSidebar"] .block-container {
+        padding-top: 1.5rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    .sidebar-brand-card {
+        background: linear-gradient(135deg, rgba(20, 20, 23, 0.9), rgba(15, 23, 42, 0.6));
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        padding: 16px;
         margin-bottom: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
 
-    .neon-glow {
-        box-shadow: 0 0 20px rgba(0, 255, 163, 0.35);
+    .sidebar-section-card {
+        background: rgba(20, 20, 23, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 14px;
+        padding: 16px;
+        margin-bottom: 18px;
     }
 
-    .neon-glow-red {
-        box-shadow: 0 0 20px rgba(239, 68, 68, 0.35);
+    .sidebar-section-title {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #94a3b8;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
 
-    /* Top Navigation / Brand Header */
+    /* Transform Streamlit Radio into High-End Navigation Tiles */
+    div[data-testid="stRadio"] > div {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    div[data-testid="stRadio"] label {
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(255, 255, 255, 0.06) !important;
+        border-radius: 10px !important;
+        padding: 10px 14px !important;
+        transition: all 0.2s ease !important;
+        cursor: pointer !important;
+        color: #94a3b8 !important;
+        font-weight: 500 !important;
+        margin: 0 !important;
+        width: 100% !important;
+    }
+
+    div[data-testid="stRadio"] label:hover {
+        background: rgba(255, 255, 255, 0.06) !important;
+        border-color: rgba(0, 255, 163, 0.3) !important;
+        color: #ffffff !important;
+        transform: translateX(4px);
+    }
+
+    div[data-testid="stRadio"] label:has(input:checked) {
+        background: rgba(0, 255, 163, 0.12) !important;
+        border-color: #00ffa3 !important;
+        color: #00ffa3 !important;
+        box-shadow: 0 0 15px rgba(0, 255, 163, 0.2) !important;
+        font-weight: 700 !important;
+    }
+
+    div[data-testid="stRadio"] label:has(input:checked) p {
+        color: #00ffa3 !important;
+        font-weight: 700 !important;
+    }
+
+    div[data-testid="stRadio"] input[type="radio"] {
+        display: none !important;
+    }
+
+    /* Selectbox, TextInput, Slider Polish */
+    div[data-testid="stSelectbox"] > div,
+    div[data-testid="stTextInput"] > div {
+        background-color: #141417 !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 10px !important;
+        color: #ffffff !important;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION SYSTEM FOR MAIN CONTENT
+       ------------------------------------------------------------- */
+    .section-card {
+        background: rgba(20, 20, 23, 0.7);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-tag {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #00ffa3;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 6px;
+        display: inline-block;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #ffffff;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Top Brand Header */
     .brand-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 24px;
+        padding: 14px 24px;
         background: rgba(9, 9, 11, 0.85);
         backdrop-filter: blur(16px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: 12px;
-        margin-bottom: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        margin-bottom: 22px;
     }
 
     .brand-logo {
@@ -99,29 +212,28 @@ st.markdown("""
     }
 
     .brand-icon {
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
         border-radius: 10px;
         background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
         display: flex;
         align-items: center;
         justify-content: center;
         color: #000;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         font-weight: 900;
-        box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
     }
 
     .text-emerald-neon {
         color: #00ffa3;
     }
 
-    /* Ticker Tape Strip */
     .market-strip {
         display: flex;
         align-items: center;
         gap: 20px;
-        font-size: 0.85rem;
+        font-size: 0.88rem;
         font-family: 'JetBrains Mono', monospace;
     }
 
@@ -132,7 +244,7 @@ st.markdown("""
         color: #00ffa3;
         font-weight: 700;
         background: rgba(0, 255, 163, 0.1);
-        padding: 3px 10px;
+        padding: 4px 12px;
         border-radius: 20px;
     }
 
@@ -151,7 +263,7 @@ st.markdown("""
         100% { transform: scale(0.9); opacity: 0.7; }
     }
 
-    /* KPI Metrics Cards */
+    /* KPI Row */
     .kpi-row {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -161,9 +273,9 @@ st.markdown("""
 
     .kpi-card {
         background: rgba(20, 20, 23, 0.75);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 16px;
-        padding: 18px 22px;
+        padding: 20px 24px;
         position: relative;
         overflow: hidden;
     }
@@ -188,47 +300,47 @@ st.markdown("""
     }
 
     .kpi-val {
-        font-size: 1.8rem;
+        font-size: 1.85rem;
         font-weight: 800;
         font-family: 'JetBrains Mono', monospace;
         color: #ffffff;
         display: flex;
         align-items: baseline;
-        gap: 8px;
+        gap: 10px;
     }
 
     .kpi-badge {
-        font-size: 0.8rem;
+        font-size: 0.82rem;
         font-weight: 700;
         color: #00ffa3;
     }
 
-    /* Hero Chart Header */
+    /* Hero Terminal Card */
     .hero-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 16px;
+        margin-bottom: 18px;
     }
 
     .asset-info h2 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         font-weight: 800;
         margin: 0;
         color: #ffffff;
     }
 
     .asset-info p {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         color: #94a3b8;
         margin: 0;
     }
 
     .signal-pill {
-        padding: 6px 14px;
-        border-radius: 8px;
+        padding: 8px 18px;
+        border-radius: 10px;
         font-weight: 800;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         letter-spacing: 0.05em;
         text-transform: uppercase;
     }
@@ -237,26 +349,25 @@ st.markdown("""
         background: rgba(0, 255, 163, 0.15);
         color: #00ffa3;
         border: 1px solid rgba(0, 255, 163, 0.4);
-        box-shadow: 0 0 12px rgba(0, 255, 163, 0.25);
+        box-shadow: 0 0 16px rgba(0, 255, 163, 0.25);
     }
 
     .signal-sell {
         background: rgba(239, 68, 68, 0.15);
         color: #ef4444;
         border: 1px solid rgba(239, 68, 68, 0.4);
-        box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
+        box-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
     }
 
-    /* Stats Bar */
     .stats-bar {
         display: flex;
         align-items: center;
         justify-content: space-between;
         background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 12px;
-        padding: 12px 20px;
-        margin-top: 16px;
+        padding: 14px 22px;
+        margin-top: 18px;
     }
 
     .stat-unit {
@@ -265,7 +376,7 @@ st.markdown("""
     }
 
     .stat-label {
-        font-size: 0.7rem;
+        font-size: 0.72rem;
         color: #64748b;
         text-transform: uppercase;
         font-weight: 700;
@@ -273,16 +384,10 @@ st.markdown("""
     }
 
     .stat-value {
-        font-size: 1rem;
+        font-size: 1.05rem;
         font-family: 'JetBrains Mono', monospace;
         font-weight: 700;
         color: #f8fafc;
-    }
-
-    /* Action Buttons */
-    .action-group {
-        display: flex;
-        gap: 10px;
     }
 
     .btn-buy {
@@ -294,13 +399,7 @@ st.markdown("""
         border: none;
         cursor: pointer;
         font-size: 0.85rem;
-        transition: all 0.2s ease;
         box-shadow: 0 0 15px rgba(0, 255, 163, 0.3);
-    }
-
-    .btn-buy:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 0 22px rgba(0, 255, 163, 0.5);
     }
 
     .btn-sell {
@@ -310,22 +409,14 @@ st.markdown("""
         padding: 10px 24px;
         border-radius: 8px;
         border: 1px solid rgba(239, 68, 68, 0.4);
-        cursor: pointer;
         font-size: 0.85rem;
-        transition: all 0.2s ease;
     }
 
-    .btn-sell:hover {
-        background: #ef4444;
-        color: #ffffff;
-    }
-
-    /* Watchlist & News */
     .watch-row {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px;
+        padding: 12px 14px;
         border-radius: 10px;
         background: rgba(255, 255, 255, 0.02);
         margin-bottom: 10px;
@@ -337,30 +428,6 @@ st.markdown("""
         background: rgba(255, 255, 255, 0.06);
         border-color: rgba(0, 255, 163, 0.3);
         transform: translateX(4px);
-    }
-
-    /* Floating Chat Bubble */
-    .assistant-bubble {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background: #00ffa3;
-        color: #000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        box-shadow: 0 0 25px rgba(0, 255, 163, 0.5);
-        cursor: pointer;
-        z-index: 999;
-        transition: transform 0.2s ease;
-    }
-
-    .assistant-bubble:hover {
-        transform: scale(1.1);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -392,19 +459,29 @@ st.markdown("""
 
 
 # ------------------------------------------------------------------------------
-# 2. SIDEBAR CONTROLS & NAVIGATION
+# 2. SIDEBAR MODULAR SECTIONS
 # ------------------------------------------------------------------------------
 st.sidebar.markdown("""
-<div style="padding: 10px 0 20px 0; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px;">
-    <div style="font-size: 1.3rem; font-weight: 800; color: #fff;">
-        GOD<span style="color: #00ffa3;">Trade</span>
+<div class="sidebar-brand-card">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #00ffa3, #06b6d4); display: flex; align-items: center; justify-content: center; font-weight: 900; color: #000; font-size: 0.9rem;">⚡</div>
+        <div>
+            <div style="font-size: 1.15rem; font-weight: 800; color: #fff; line-height: 1.1;">GOD<span style="color: #00ffa3;">Trade</span></div>
+            <div style="font-size: 0.7rem; color: #64748b; font-family: 'JetBrains Mono', monospace;">QUANTITATIVE v2.4</div>
+        </div>
     </div>
-    <div style="font-size: 0.75rem; color: #64748b;">Quantitative Terminal v2.4</div>
+</div>
+""", unsafe_allow_html=True)
+
+# Sidebar Section 1: Navigation Modes
+st.sidebar.markdown("""
+<div class="sidebar-section-title">
+    <span>🧭</span> NAVIGATION WORKSPACE
 </div>
 """, unsafe_allow_html=True)
 
 nav_mode = st.sidebar.radio(
-    "Navigation Mode",
+    "Navigation Modes",
     [
         "📊 Active Asset Terminal",
         "📸 AI Chart Vision (Upload Screenshot)",
@@ -412,22 +489,38 @@ nav_mode = st.sidebar.radio(
         "📁 Custom CSV Ingestion",
         "🛡️ Continuous Drift Guard (Exp 8)",
         "🔌 API & Audit Telemetry (Exp 7)"
-    ]
+    ],
+    label_visibility="collapsed"
 )
 
-st.sidebar.markdown("---")
-st.sidebar.subheader("Asset Selector")
+# Sidebar Section 2: Asset & Model Settings
+st.sidebar.markdown("""
+<div class="sidebar-section-title" style="margin-top: 20px;">
+    <span>⚙️</span> ASSET & MODEL CONFIG
+</div>
+""", unsafe_allow_html=True)
+
 ticker_symbol = st.sidebar.selectbox("Select Asset Ticker", DEFAULT_TICKERS, index=0)
 custom_sym = st.sidebar.text_input("Or enter custom symbol (e.g. TSLA, NVDA):", "")
 if custom_sym.strip():
     ticker_symbol = custom_sym.strip().upper()
 
 model_select = st.sidebar.selectbox(
-    "Champion ML Engine",
+    "Active ML Engine",
     ["Random Forest (Production Champion)", "Logistic Regression (L2)", "PyTorch LSTM (Sequence)"]
 )
 
 threshold_val = st.sidebar.slider("Signal Probability Cutoff", 0.50, 0.75, 0.52, 0.01)
+
+# Sidebar Section 3: Pro Signal Card (Matching TradeVision Superdesign Draft)
+st.sidebar.markdown("""
+<div style="margin-top: 24px; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(16, 185, 129, 0.1)); border: 1px solid rgba(255, 255, 255, 0.08);">
+    <div style="font-size: 0.7rem; font-weight: 700; color: #00ffa3; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px;">PRO SIGNAL &bull; ALPHA</div>
+    <div style="font-size: 0.85rem; color: #e2e8f0; font-weight: 600; line-height: 1.4;">
+        Random Forest model flags bullish continuation with 1.56 Sharpe Ratio.
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 
 # Cache and load data
@@ -465,7 +558,6 @@ try:
 
     vol_str = f"{curr_vol / 1e6:.1f}M" if curr_vol >= 1e6 else f"{curr_vol / 1e3:.1f}K"
 
-    # Load backtest evaluation data for KPIs
     eval_file = MODELS_DIR / "evaluation_summary.json"
     if eval_file.exists():
         with open(eval_file, "r") as f:
@@ -485,26 +577,26 @@ except Exception as ex:
 
 
 # ------------------------------------------------------------------------------
-# 3. TOP KPI CARDS (MATCHING SUPERDESIGN DRAFT)
+# 3. SECTION: PORTFOLIO & ALGORITHM TELEMETRY (3 KPI GLASS CARDS)
 # ------------------------------------------------------------------------------
 st.markdown(f"""
 <div class="kpi-row">
     <div class="kpi-card kpi-green">
-        <div class="kpi-title">Total Strategy Portfolio Balance</div>
+        <div class="kpi-title">TOTAL STRATEGY PORTFOLIO BALANCE</div>
         <div class="kpi-val">
             ${total_balance:,.2f}
             <span class="kpi-badge">+{balance_gain:.1f}%</span>
         </div>
     </div>
     <div class="kpi-card kpi-purple">
-        <div class="kpi-title">Allocated Buying Power / Reserves</div>
+        <div class="kpi-title">ALLOCATED CASH RESERVES / BUYING POWER</div>
         <div class="kpi-val">$24,090.00</div>
     </div>
     <div class="kpi-card kpi-blue">
-        <div class="kpi-title">Active Directional Predictions</div>
+        <div class="kpi-title">ACTIVE PREDICTIONS & OUT-OF-SAMPLE WIN RATE</div>
         <div class="kpi-val">
             287
-            <span style="font-size: 0.8rem; color: #38bdf8;">{accuracy_val:.1f}% Win Rate</span>
+            <span style="font-size: 0.85rem; color: #38bdf8;">{accuracy_val:.1f}% Win Rate</span>
         </div>
     </div>
 </div>
@@ -512,47 +604,45 @@ st.markdown(f"""
 
 
 # ==============================================================================
-# MAIN VIEW: ACTIVE ASSET TERMINAL
+# SECTION A: ACTIVE ASSET TERMINAL
 # ==============================================================================
 if nav_mode == "📊 Active Asset Terminal":
     col_main, col_side = st.columns([8, 4])
 
     with col_main:
-        # Asset Terminal Card
         st.markdown(f"""
-        <div class="glass-card">
+        <div class="section-card">
+            <span class="section-tag">// 01. ACTIVE TERMINAL CANVASES</span>
             <div class="hero-header">
                 <div class="asset-info">
-                    <h2>{ticker_symbol} &bull; Real-time AI Forecast</h2>
-                    <p>Horizon: Next Trading Day &bull; Engine: Random Forest Bagged Ensemble</p>
+                    <h2>{ticker_symbol} &bull; Next-Day AI Directional Forecast</h2>
+                    <p>Engine: Random Forest Champion &bull; Horizon: 1 Trading Session</p>
                 </div>
                 <div class="signal-pill {badge_style}">
                     {direction_txt}
                 </div>
             </div>
-        </div>
         """, unsafe_allow_html=True)
 
-        # Main Chart Area (Dark Glassmorphic Plotly / SVG Styled Canvas)
+        # Main Chart Area
         recent_bars = df_feat.tail(180)
 
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(11, 6), sharex=True, gridspec_kw={"height_ratios": [3, 1]})
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(11, 5.8), sharex=True, gridspec_kw={"height_ratios": [3, 1]})
         fig.patch.set_facecolor("#141417")
         ax1.set_facecolor("#09090b")
         ax2.set_facecolor("#09090b")
 
-        # Main Price Line & Trend Area
         x_dates = recent_bars["Date"]
         closes = recent_bars["Close"].values
         sma10 = recent_bars["SMA_10"].values
         sma50 = recent_bars["SMA_50"].values
 
         ax1.plot(x_dates, closes, color="#00ffa3", linewidth=2, label=f"{ticker_symbol} Close")
-        ax1.fill_between(x_dates, closes, closes.min() * 0.98, color="#00ffa3", alpha=0.1)
+        ax1.fill_between(x_dates, closes, closes.min() * 0.98, color="#00ffa3", alpha=0.08)
         ax1.plot(x_dates, sma10, color="#f59e0b", linestyle="--", linewidth=1.2, label="10-day SMA")
         ax1.plot(x_dates, sma50, color="#8b5cf6", linestyle="-.", linewidth=1.2, label="50-day SMA")
 
-        # Dotted Forecast Trajectory Line
+        # Forecast Trajectory
         last_date = x_dates.iloc[-1]
         next_date = last_date + pd.Timedelta(days=1)
         next_predicted_close = curr_close * (1 + forecast_pct / 100)
@@ -565,7 +655,6 @@ if nav_mode == "📊 Active Asset Terminal":
         ax1.grid(color="#ffffff", alpha=0.04)
         ax1.legend(loc="upper left", facecolor="#141417", edgecolor="none", labelcolor="#fff")
 
-        # RSI Oscillator Subplot
         rsi_vals = recent_bars["RSI_14"].values
         ax2.plot(x_dates, rsi_vals, color="#a855f7", linewidth=1.2, label="RSI 14")
         ax2.axhline(70, color="#ef4444", linestyle=":", alpha=0.6)
@@ -582,41 +671,43 @@ if nav_mode == "📊 Active Asset Terminal":
 
         # Stats Bar & Quick Actions
         st.markdown(f"""
-        <div class="stats-bar">
-            <div class="stat-unit">
-                <span class="stat-label">Open</span>
-                <span class="stat-value">{curr_open:.2f}</span>
-            </div>
-            <div class="stat-unit">
-                <span class="stat-label">High</span>
-                <span class="stat-value">{curr_high:.2f}</span>
-            </div>
-            <div class="stat-unit">
-                <span class="stat-label">Low</span>
-                <span class="stat-value">{curr_low:.2f}</span>
-            </div>
-            <div class="stat-unit">
-                <span class="stat-label">Volume</span>
-                <span class="stat-value">{vol_str}</span>
-            </div>
-            <div class="stat-unit">
-                <span class="stat-label">Confidence</span>
-                <span class="stat-value" style="color: #00ffa3;">{pred_res['prediction']['confidence_level']}</span>
-            </div>
-            <div class="action-group">
-                <button class="btn-sell">SELL / SHORT</button>
-                <button class="btn-buy">BUY NOW</button>
+            <div class="stats-bar">
+                <div class="stat-unit">
+                    <span class="stat-label">Open</span>
+                    <span class="stat-value">{curr_open:.2f}</span>
+                </div>
+                <div class="stat-unit">
+                    <span class="stat-label">High</span>
+                    <span class="stat-value">{curr_high:.2f}</span>
+                </div>
+                <div class="stat-unit">
+                    <span class="stat-label">Low</span>
+                    <span class="stat-value">{curr_low:.2f}</span>
+                </div>
+                <div class="stat-unit">
+                    <span class="stat-label">Volume</span>
+                    <span class="stat-value">{vol_str}</span>
+                </div>
+                <div class="stat-unit">
+                    <span class="stat-label">Confidence</span>
+                    <span class="stat-value" style="color: #00ffa3;">{pred_res['prediction']['confidence_level']}</span>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-sell">SELL / SHORT</button>
+                    <button class="btn-buy">BUY NOW</button>
+                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
     with col_side:
-        # Watchlist Card (Matching TradeVision UI)
+        # Watchlist Section Card
         st.markdown("""
-        <div class="glass-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0; color: #fff;">⭐ Active Watchlist</h3>
-                <span style="font-size: 0.75rem; color: #00ffa3; cursor: pointer;">Live Basket</span>
+        <div class="section-card">
+            <span class="section-tag">// 02. ACTIVE WATCHLIST</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h3 style="font-size: 1.15rem; font-weight: 800; margin: 0; color: #fff;">⭐ Top Liquid Assets</h3>
+                <span style="font-size: 0.72rem; color: #00ffa3; font-weight: 700;">Live Feed</span>
             </div>
         """, unsafe_allow_html=True)
 
@@ -646,12 +737,13 @@ if nav_mode == "📊 Active Asset Terminal":
 
         st.markdown("</div>", unsafe_allow_html=True)
 
-        # AI Market Intelligence & Quantitative Signals (From Exp 4 & Exp 8)
+        # Quantitative Signals Section Card
         st.markdown("""
-        <div class="glass-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0; color: #fff;">📰 Quantitative Signals</h3>
-                <span style="font-size: 0.75rem; color: #8b5cf6;">Telemetry Feed</span>
+        <div class="section-card">
+            <span class="section-tag">// 03. QUANTITATIVE SIGNALS</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h3 style="font-size: 1.15rem; font-weight: 800; margin: 0; color: #fff;">📰 Research Telemetry</h3>
+                <span style="font-size: 0.72rem; color: #8b5cf6; font-weight: 700;">CSE4007L</span>
             </div>
             <div style="margin-bottom: 14px;">
                 <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #00ffa3; font-weight: 700;">
@@ -682,11 +774,12 @@ if nav_mode == "📊 Active Asset Terminal":
 
 
 # ==============================================================================
-# MODE 2: AI CHART VISION (UPLOAD SCREENSHOT)
+# SECTION B: AI CHART VISION (UPLOAD SCREENSHOT)
 # ==============================================================================
 elif nav_mode == "📸 AI Chart Vision (Upload Screenshot)":
     st.markdown("""
-    <div class="glass-card">
+    <div class="section-card">
+        <span class="section-tag">// 04. COMPUTER VISION ENGINE</span>
         <h2 style="color: #fff; margin-bottom: 8px;">📸 GOD Trade Chart Vision OCR</h2>
         <p style="color: #94a3b8; font-size: 0.9rem;">
             Upload any candlestick or line chart screenshot (TradingView, Zerodha, Yahoo Finance, Robinhood). 
@@ -698,6 +791,7 @@ elif nav_mode == "📸 AI Chart Vision (Upload Screenshot)":
     cv_c1, cv_c2 = st.columns([1, 1.1])
 
     with cv_c1:
+        st.markdown("##### 1. Drop Chart Screenshot")
         uploaded_chart = st.file_uploader("Upload Chart Screenshot (PNG, JPG, JPEG)", type=["png", "jpg", "jpeg", "webp"])
 
         st.caption("✨ Or test instantly with pre-rendered technical charts:")
@@ -721,6 +815,7 @@ elif nav_mode == "📸 AI Chart Vision (Upload Screenshot)":
 
     with cv_c2:
         if target_img:
+            st.markdown("##### 2. Computer Vision Analysis")
             with st.spinner("🤖 Scanning pixel geometry, candle sentiment, and support/resistance..."):
                 cv_res = analyze_chart_image(target_img)
 
@@ -730,8 +825,8 @@ elif nav_mode == "📸 AI Chart Vision (Upload Screenshot)":
             v_badge = "signal-buy" if is_up_v else "signal-sell"
 
             st.markdown(f"""
-            <div class="glass-card" style="border-left: 4px solid {'#00ffa3' if is_up_v else '#ef4444'};">
-                <div style="font-size: 0.8rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">VISION MODEL SIGNAL</div>
+            <div class="section-card" style="border-left: 4px solid {'#00ffa3' if is_up_v else '#ef4444'};">
+                <span class="section-tag">// VISION PREDICTION</span>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
                     <span class="signal-pill {v_badge}">{direction_v}</span>
                     <span style="font-family: 'JetBrains Mono', monospace; font-size: 1.3rem; font-weight: 700; color: #fff;">
@@ -758,12 +853,13 @@ elif nav_mode == "📸 AI Chart Vision (Upload Screenshot)":
 
 
 # ==============================================================================
-# MODE 3: STRATEGY BACKTEST VS BUY & HOLD
+# SECTION C: STRATEGY BACKTEST VS BUY & HOLD
 # ==============================================================================
 elif nav_mode == "📈 Strategy Backtest vs Buy & Hold":
     st.markdown("""
-    <div class="glass-card">
-        <h2 style="color: #fff; margin-bottom: 8px;">📈 Out-of-Sample Strategy Backtest (Experiment 6)</h2>
+    <div class="section-card">
+        <span class="section-tag">// 05. STRATEGY BACKTESTING (EXPERIMENT 6)</span>
+        <h2 style="color: #fff; margin-bottom: 8px;">📈 Out-of-Sample Quantitative Backtest</h2>
         <p style="color: #94a3b8; font-size: 0.9rem;">
             Simulating GOD Trade algorithmic signal-following strategy vs the passive Buy & Hold benchmark on unseen test window.
         </p>
@@ -820,11 +916,12 @@ elif nav_mode == "📈 Strategy Backtest vs Buy & Hold":
 
 
 # ==============================================================================
-# MODE 4: CUSTOM CSV INGESTION
+# SECTION D: CUSTOM CSV INGESTION
 # ==============================================================================
 elif nav_mode == "📁 Custom CSV Ingestion":
     st.markdown("""
-    <div class="glass-card">
+    <div class="section-card">
+        <span class="section-tag">// 06. CUSTOM DATA INGESTION</span>
         <h2 style="color: #fff; margin-bottom: 8px;">📁 Ingest Custom Financial Time-Series</h2>
         <p style="color: #94a3b8; font-size: 0.9rem;">
             Upload any CSV file with <code>Open, High, Low, Close, Volume</code> columns to calculate 17 technical indicators and run predictions.
@@ -847,8 +944,8 @@ elif nav_mode == "📁 Custom CSV Ingestion":
             c_badge = "signal-buy" if c_is_up else "signal-sell"
 
             st.markdown(f"""
-            <div class="glass-card" style="border-left: 4px solid {'#00ffa3' if c_is_up else '#ef4444'};">
-                <div style="font-size: 0.8rem; color: #94a3b8; font-weight: 700;">CSV MODEL PREDICTION</div>
+            <div class="section-card" style="border-left: 4px solid {'#00ffa3' if c_is_up else '#ef4444'};">
+                <span class="section-tag">// MODEL OUTPUT</span>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
                     <span class="signal-pill {c_badge}">{c_dir}</span>
                     <span style="font-family: 'JetBrains Mono', monospace; font-size: 1.3rem; font-weight: 700; color: #fff;">
@@ -866,12 +963,13 @@ elif nav_mode == "📁 Custom CSV Ingestion":
 
 
 # ==============================================================================
-# MODE 5: CONTINUOUS DRIFT GUARD (EXPERIMENT 8)
+# SECTION E: CONTINUOUS DRIFT GUARD (EXPERIMENT 8)
 # ==============================================================================
 elif nav_mode == "🛡️ Continuous Drift Guard (Exp 8)":
     st.markdown("""
-    <div class="glass-card">
-        <h2 style="color: #fff; margin-bottom: 8px;">🛡️ Continuous Drift Guard & Telemetry (Experiment 8)</h2>
+    <div class="section-card">
+        <span class="section-tag">// 07. DRIFT TELEMETRY (EXPERIMENT 8)</span>
+        <h2 style="color: #fff; margin-bottom: 8px;">🛡️ Continuous Drift Guard & Telemetry</h2>
         <p style="color: #94a3b8; font-size: 0.9rem;">
             Evaluates rolling performance degradation against naive persistence baseline and checks covariate drift via Kolmogorov-Smirnov (KS) tests.
         </p>
@@ -897,12 +995,13 @@ elif nav_mode == "🛡️ Continuous Drift Guard (Exp 8)":
 
 
 # ==============================================================================
-# MODE 6: API & AUDIT TELEMETRY (EXPERIMENT 7)
+# SECTION F: API & AUDIT TELEMETRY (EXPERIMENT 7)
 # ==============================================================================
 elif nav_mode == "🔌 API & Audit Telemetry (Exp 7)":
     st.markdown("""
-    <div class="glass-card">
-        <h2 style="color: #fff; margin-bottom: 8px;">🔌 Production REST API & Audit Log (Experiment 7)</h2>
+    <div class="section-card">
+        <span class="section-tag">// 08. PRODUCTION SCORING API (EXPERIMENT 7)</span>
+        <h2 style="color: #fff; margin-bottom: 8px;">🔌 Production REST API & Audit Log</h2>
         <p style="color: #94a3b8; font-size: 0.9rem;">
             Deterministic scoring endpoint schema with immutable prediction audit logging.
         </p>
@@ -930,9 +1029,8 @@ elif nav_mode == "🔌 API & Audit Telemetry (Exp 7)":
 
 
 # ------------------------------------------------------------------------------
-# 4. FLOATING AI TRADE ASSISTANT (CHAT COMPONENT)
+# 4. SECTION: FLOATING AI TRADE ASSISTANT
 # ------------------------------------------------------------------------------
-st.markdown("---")
 with st.expander("💬 GOD Trade AI Assistant (Click to open Trade Assistant)"):
     st.markdown("""
     <div style="background: rgba(20,20,23,0.9); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);">
