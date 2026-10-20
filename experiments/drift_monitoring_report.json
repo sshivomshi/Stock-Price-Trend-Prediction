@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-10-20T17:47:45.702333+00:00",
+  "ticker": "AAPL",
+  "evaluation_window_days": 20,
+  "performance_monitoring": {
+    "recent_rolling_accuracy": 0.5,
+    "baseline_threshold": 0.5,
+    "performance_drift_detected": false,
+    "status": "PASS"
+  },
+  "feature_drift_monitoring": {
+    "tests_conducted": "Kolmogorov-Smirnov (KS) Two-Sample Test",
+    "significance_level": 0.05,
+    "drifted_features_count": 3,
+    "feature_details": {
+      "Return_1d": {
+        "ks_statistic": 0.196,
+        "p_value": 0.3848,
+        "drift_detected": false
+      },
+      "Volatility_10": {
+        "ks_statistic": 0.6515,
+        "p_value": 0.0,
+        "drift_detected": true
+      },
+      "RSI_14": {
+        "ks_statistic": 0.3635,
+        "p_value": 0.0077,
+        "drift_detected": true
+      },
+      "Volume_Ratio": {
+        "ks_statistic": 0.1926,
+        "p_value": 0.406,
+        "drift_detected": false
+      },
+      "Dist_SMA_50": {
+        "ks_statistic": 0.4361,
+        "p_value": 0.0006,
+        "drift_detected": true
+      }
+    }
+  },
+  "regime_shift_monitoring": {
+    "historical_mean_volatility": 0.0176,
+    "recent_mean_volatility": 0.0107,
+    "z_score": -0.72,
+    "regime_shift_detected": false
+  },
+  "maintenance_recommendation": {
+    "action": "RETRAIN_TRIGGERED",
+    "message": "ALERT: Performance degradation or significant feature drift detected. Trigger automated retraining.",
+    "retraining_cadence": "Bi-weekly scheduled, or event-driven upon drift alert",
+    "rollback_plan": "Revert to champion Random Forest checkpoint if challenger accuracy on sliding 30-day window is lower."
+  }
+}

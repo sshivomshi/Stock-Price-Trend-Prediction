@@ -1,0 +1,30 @@
+{
+  "ticker": "AAPL",
+  "sample_size": 1337,
+  "class_balance": {
+    "up_count": 711,
+    "down_count": 626,
+    "up_percentage": 53.18
+  },
+  "return_stats": {
+    "mean": 0.00143,
+    "std": 0.01984,
+    "skewness": 0.07,
+    "kurtosis": 5.131
+  },
+  "insights": [
+    "Class Balance & Persistence Baseline: Up days account for 53.2% (711/1337) of sessions, setting the naive majority benchmark accuracy at 53.2%.",
+    "Non-Gaussian Leptokurtic Fat Tails: Daily returns show excess kurtosis of 5.13 and skewness of 0.07, indicating extreme tail events. Robust scaling is required to dampen outlier leverage on linear weights.",
+    "Momentum Mean Reversion vs Continuation: Mean RSI for Up days (55.6) is slightly higher than Down days (55.7), but extreme RSI (>70) exhibits mean-reversion pullbacks.",
+    "Moving Average Divergence: The ratio SMA_10 / SMA_50 captures intermediate trend strength. Strong positive divergences correlate with persistent multi-week bullish regimes.",
+    "Volume Confirmation: Surges in Volume_Ratio (>1.5x of 20-day SMA) correlate with higher magnitude next-day returns, confirming directional commitment.",
+    "Low Linear Correlation: Raw correlation between individual technical indicators and next-day binary direction is moderate (|r| < 0.12), highlighting the need for non-linear ensembles (Random Forest) and sequential recurrent architectures (LSTM)."
+  ],
+  "figures": [
+    "C:\\Users\\shivomshi singh\\Desktop\\Ml Project\\experiments\\figures\\AAPL_price_and_moving_averages.png",
+    "C:\\Users\\shivomshi singh\\Desktop\\Ml Project\\experiments\\figures\\AAPL_oscillators_rsi_macd.png",
+    "C:\\Users\\shivomshi singh\\Desktop\\Ml Project\\experiments\\figures\\AAPL_feature_correlation_heatmap.png",
+    "C:\\Users\\shivomshi singh\\Desktop\\Ml Project\\experiments\\figures\\AAPL_return_distribution.png",
+    "C:\\Users\\shivomshi singh\\Desktop\\Ml Project\\experiments\\figures\\AAPL_volume_by_direction.png"
+  ]
+}
