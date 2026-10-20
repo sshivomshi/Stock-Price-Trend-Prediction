@@ -27,13 +27,22 @@ $$\text{Target Variable } Y_t = \begin{cases} 1, & \text{if } \text{Close}_{t+1}
 
 ---
 
-## 📸 AI Chart Vision & Image Input Feature
-Users can directly input any stock chart image (TradingView, Zerodha, Yahoo Finance screenshots) into the web dashboard:
-- **Candlestick Sentiment Ratio**: Detects the ratio of green buying vs red selling volume across candle bodies.
-- **Trend Trajectory Extraction**: Analyzes recent price momentum slope across horizontal time coordinates.
-- **Support & Resistance Detection**: Automatically identifies price levels and breakout vectors.
-- **Directional Signal**: Emits `BULLISH (UP)` or `BEARISH (DOWN)` with confidence percentage and detailed technical rationale.
-- **Custom CSV Upload**: Also supports uploading raw time-series CSV files for instantaneous multi-model inference.
+## 📸 AI Chart Vision, Native OCR & Hybrid ML Engine
+Users can upload any stock chart screenshot (PNG, JPG, JPEG, WEBP) from TradingView, Zerodha, or any broker, or select a live asset ticker:
+- **Structural Image Validation (`src/image_validator.py`)**: Rejects blank, corrupted, or non-chart uploads with explicit diagnostic failure reasons.
+- **Native Zero-Dependency OCR (`src/ocr_engine.py`)**: Leverages native Windows Runtime OCR (`Windows.Media.Ocr`) to extract ticker symbols, timeframes, price axes, and visible indicators (RSI, MACD, Bollinger Bands, SMAs).
+- **Manual Parameter Confirmation**: Allows users to review and manually override/confirm detected tickers, timeframes, and exchanges before running inference.
+- **Computer Vision Geometry (`src/chart_analyzer.py`)**: Computes candlestick buying vs. selling pixel volume density, horizontal momentum gradients, and dynamic support/resistance channels.
+- **Quantitative ML Fusion**: When ticker data is identified, pulls real historical OHLCV data, calculates 17 technical indicators, and runs trained classifiers (Random Forest champion model, Logistic Regression, PyTorch LSTM).
+- **Calibrated Prediction Report**:
+  - **Market Trend**: Bullish, Bearish, or Sideways Consolidation.
+  - **Predicted Direction**: Upward, Downward, or Uncertain.
+  - **Calibrated Confidence**: Empirically scaled based on historical out-of-sample test validation (56.79% accuracy benchmark).
+  - **Key Price Levels**: Estimated support, resistance, and potential breakout triggers (distinguishing observed values from model estimates).
+  - **Expected Price Range**: Calculated via $1.5\times \text{ATR}$ statistical volatility channel when verified data is available.
+  - **Contradiction Detection & Risk Factors**: Alerts user when visual trend contradicts technical oscillators (e.g. overbought RSI > 70 or MACD bearish divergence).
+  - **Downloadable Reports**: Export structured reports in Markdown (`.md`) or JSON (`.json`).
+  - **Session History**: Track and compare multiple chart scans side-by-side.
 
 ---
 
