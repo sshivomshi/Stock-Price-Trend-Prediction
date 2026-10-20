@@ -27,7 +27,8 @@ def assess_model_and_data_drift(
     test_file = PROCESSED_DATA_DIR / f"{ticker}_test.parquet"
 
     if not train_file.exists() or not test_file.exists():
-        raise FileNotFoundError("Train or test processed data missing. Run preprocessing pipeline first.")
+        from src.preprocess import load_and_preprocess_data
+        load_and_preprocess_data(ticker=ticker)
 
     train_df = pd.read_parquet(train_file)
     test_df = pd.read_parquet(test_file)

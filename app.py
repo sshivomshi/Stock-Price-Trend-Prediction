@@ -163,14 +163,26 @@ try:
 
     # Tab 2: Strategy Backtesting
     with tab2:
-        st.subheader("Quantitative Strategy Backtesting on Held-Out Test Window")
-        eval_path = MODELS_DIR / "evaluation_summary.json"
-        if eval_path.exists():
-            with open(eval_path, "r") as f:
-                eval_data = json.load(f)
+        st.subheader(f"Quantitative Strategy Backtesting on Held-Out Test Window — {selected_ticker}")
+        try:
+            test_file = BASE_DIR / "data" / "processed" / f"{selected_ticker}_test.parquet"
+            if not test_file.exists():
+                from src.preprocess import load_and_preprocess_data
+                load_and_preprocess_data(ticker=selected_ticker)
 
-            rf_eval = eval_data["models"]["random_forest"]
-            backtest_data = rf_eval["backtest"]
+            test_df_sel = pd.read_parquet(test_file)
+            from src.evaluate import calculate_backtest_metrics
+            import joblib
+
+            rf_model = joblib.load(MODELS_DIR / "random_forest.joblib")
+            scaler = joblib.load(MODELS_DIR / "preprocessor_pipeline.joblib")
+            feat_cols = get_feature_column_names()
+
+            X_scaled_sel = scaler.transform(test_df_sel[feat_cols])
+            preds_sel = rf_model.predict(X_scaled_sel)
+            returns_sel = test_df_sel["Target_Return"].values
+
+            backtest_data = calculate_backtest_metrics(returns_sel, preds_sel)
 
             bc1, bc2, bc3, bc4 = st.columns(4)
             with bc1:
@@ -188,13 +200,15 @@ try:
             cum_bench = np.array(backtest_data["cum_benchmark_series"]) * 100
             ax_b.plot(cum_strat, label=f"Random Forest Trading Strategy ({cum_strat[-1]:.1f}%)", color="#2ca02c", linewidth=2)
             ax_b.plot(cum_bench, label=f"Buy & Hold Benchmark ({cum_bench[-1]:.1f}%)", color="black", linestyle="--", linewidth=1.5)
-            ax_b.set_title("Out-of-Sample Cumulative Returns Comparison (%)", fontweight="bold")
+            ax_b.set_title(f"{selected_ticker} Out-of-Sample Cumulative Returns Comparison (%)", fontweight="bold")
             ax_b.set_ylabel("Cumulative Return (%)")
             ax_b.set_xlabel("Held-Out Test Days")
             ax_b.legend(loc="upper left")
             plt.tight_layout()
             st.pyplot(fig_b)
             plt.close()
+        except Exception as e:
+            st.warning(f"Could not compute backtest for {selected_ticker}: {e}")
 
     # Tab 3: Explainability
     with tab3:
@@ -218,21 +232,24 @@ try:
     # Tab 4: Drift Monitoring
     with tab4:
         st.subheader("Experiment 8: Continuous Update & Automated Drift Monitoring")
-        drift_report = assess_model_and_data_drift(ticker=selected_ticker)
+        try:
+            drift_report = assess_model_and_data_drift(ticker=selected_ticker)
 
-        dc1, dc2, dc3 = st.columns(3)
-        with dc1:
-            st.metric("Monitoring Status", drift_report["maintenance_recommendation"]["action"])
-        with dc2:
-            st.metric("Rolling Accuracy (20 Sessions)", f"{drift_report['performance_monitoring']['recent_rolling_accuracy']:.1%}", "Threshold: 50%")
-        with dc3:
-            st.metric("Drifted Features Detected", f"{drift_report['feature_drift_monitoring']['drifted_features_count']} Features")
+            dc1, dc2, dc3 = st.columns(3)
+            with dc1:
+                st.metric("Monitoring Status", drift_report["maintenance_recommendation"]["action"])
+            with dc2:
+                st.metric("Rolling Accuracy (20 Sessions)", f"{drift_report['performance_monitoring']['recent_rolling_accuracy']:.1%}", "Threshold: 50%")
+            with dc3:
+                st.metric("Drifted Features Detected", f"{drift_report['feature_drift_monitoring']['drifted_features_count']} Features")
 
-        st.markdown(f"**Automated Decision:** `{drift_report['maintenance_recommendation']['message']}`")
+            st.markdown(f"**Automated Decision:** `{drift_report['maintenance_recommendation']['message']}`")
 
-        st.write("#### Feature Drift Details (Kolmogorov-Smirnov Two-Sample Test)")
-        feat_drift_df = pd.DataFrame.from_dict(drift_report["feature_drift_monitoring"]["feature_details"], orient="index")
-        st.dataframe(feat_drift_df, use_container_width=True)
+            st.write("#### Feature Drift Details (Kolmogorov-Smirnov Two-Sample Test)")
+            feat_drift_df = pd.DataFrame.from_dict(drift_report["feature_drift_monitoring"]["feature_details"], orient="index")
+            st.dataframe(feat_drift_df, use_container_width=True)
+        except Exception as e:
+            st.warning(f"Could not compute drift report for {selected_ticker}: {e}")
 
     # Tab 5: API Documentation
     with tab5:
