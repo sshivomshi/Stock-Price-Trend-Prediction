@@ -26,6 +26,16 @@ $$\text{Target Variable } Y_t = \begin{cases} 1, & \text{if } \text{Close}_{t+1}
 
 ---
 
+## 📸 AI Chart Vision & Image Input Feature
+Users can directly input any stock chart image (TradingView, Zerodha, Yahoo Finance screenshots) into the web dashboard:
+- **Candlestick Sentiment Ratio**: Detects the ratio of green buying vs red selling volume across candle bodies.
+- **Trend Trajectory Extraction**: Analyzes recent price momentum slope across horizontal time coordinates.
+- **Support & Resistance Detection**: Automatically identifies price levels and breakout vectors.
+- **Directional Signal**: Emits `BULLISH (UP)` or `BEARISH (DOWN)` with confidence percentage and detailed technical rationale.
+- **Custom CSV Upload**: Also supports uploading raw time-series CSV files for instantaneous multi-model inference.
+
+---
+
 ## 🔬 Lab Schedule — 8 Experiments Mapping
 
 This repository is structured into **8 modular lab experiments** adhering strictly to the curriculum syllabus:
