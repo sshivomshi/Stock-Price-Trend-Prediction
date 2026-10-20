@@ -1,11 +1,12 @@
-# Stock Price Trend Prediction
+# GOD Trade — AI Stock Price Trend Prediction Terminal
 
 [![Course](https://img.shields.io/badge/Course-CSE4007L%20Applications%20of%20ML%20in%20Industry-blue)](https://github.com/sshivomshi/Stock-Price-Trend-Prediction)
 [![Project](https://img.shields.io/badge/Project-Fin--Project%203%3A%20Stock%20Price%20Trend%20Prediction-green)](https://github.com/sshivomshi/Stock-Price-Trend-Prediction)
+[![UI Design](https://img.shields.io/badge/UI-GOD%20Trade%20Terminal-00ffa3.svg)](tradevision_design.html)
 [![License](https://img.shields.io/badge/License-MIT-orange.svg)](LICENSE)
 [![Streamlit](https://img.shields.io/badge/UI-Streamlit%20Dashboard-FF4B4B.svg)](https://streamlit.io/)
 
-A production-grade machine learning system designed to forecast next-day stock price directional movement (`BULLISH` vs `BEARISH`) for a liquid basket of NASDAQ and NIFTY 50 equities, supporting systematic retail trading alerts and hedging strategies.
+A production-grade machine learning system and high-aesthetic quantitative trading terminal branded as **GOD Trade**, designed to forecast next-day stock price directional movement (`BULLISH` vs `BEARISH`) for a liquid basket of NASDAQ and NIFTY 50 equities, supporting systematic retail trading alerts and hedging strategies.
 
 Developed to fulfill the laboratory requirements for **CSE4007L: Applications of Machine Learning in Industry (Fin-Project 3)**.
 
