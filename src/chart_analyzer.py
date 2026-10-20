@@ -574,3 +574,8 @@ def analyze_uploaded_csv(df_uploaded: pd.DataFrame) -> Dict:
         "sma_50": round(float(latest_row["SMA_50"].values[0]), 2),
         "featured_df": df_featured
     }
+
+
+# Backward compatibility alias
+analyze_chart_image = analyze_stock_chart
+

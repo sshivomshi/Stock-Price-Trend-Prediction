@@ -13,6 +13,9 @@ import pandas as pd
 from PIL import Image
 import streamlit as st
 
+import importlib
+import src.chart_analyzer
+importlib.reload(src.chart_analyzer)
 from src.chart_analyzer import analyze_stock_chart, analyze_uploaded_csv
 from src.config import BASE_DIR, DEFAULT_TICKERS, MODELS_DIR, RAW_DATA_DIR
 from src.data_loader import fetch_ticker_data
